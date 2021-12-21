@@ -1,0 +1,12 @@
+FROM busybox AS builder
+
+RUN mkdir -p /inst/bin && \
+    cp -p /bin/echo /inst/busybox && \
+    ln -s /busybox /inst/bin/echo && \
+    ln -s /busybox /inst/bin/sh
+
+FROM scratch
+
+COPY --from=builder /inst /
+
+CMD echo "Hello World from busybox!"

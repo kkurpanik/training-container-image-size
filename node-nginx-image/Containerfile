@@ -1,0 +1,13 @@
+FROM node:16-alpine AS builder
+
+COPY . /app
+
+WORKDIR /app/demo-app
+
+RUN npm install && npm run build
+
+FROM docker.io/library/nginx:stable-alpine
+
+COPY --from=builder /app/demo-app/build /usr/share/nginx/html
+
+CMD ["nginx", "-g", "daemon off;"]

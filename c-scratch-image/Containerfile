@@ -1,0 +1,13 @@
+FROM gcc AS builder
+
+COPY hello.c .
+
+RUN gcc -s -O3 -nostartfiles -o hello hello.c -static --entry main
+
+FROM scratch
+
+COPY --from=builder /hello /
+
+CMD ["./hello"]
+
+
